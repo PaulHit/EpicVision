@@ -17,7 +17,7 @@ public class CommunityGroupService {
 
     public List<CommunityGroupResponseDTO> getAll() {
         return groupRepository.findAll().stream()
-                .map(g -> new CommunityGroupResponseDTO(g.getId(), g.getName(), g.getDescription()))
+                .map(g -> new CommunityGroupResponseDTO(g.getId(), g.getName(), g.getDescription(), g.getWhatsappUrl()))
                 .collect(Collectors.toList());
     }
 
@@ -27,6 +27,6 @@ public class CommunityGroupService {
                 .description(dto.description())
                 .build();
         CommunityGroup saved = groupRepository.save(group);
-        return new CommunityGroupResponseDTO(saved.getId(), saved.getName(), saved.getDescription());
+        return new CommunityGroupResponseDTO(saved.getId(), saved.getName(), saved.getDescription(), saved.getWhatsappUrl());
     }
 }

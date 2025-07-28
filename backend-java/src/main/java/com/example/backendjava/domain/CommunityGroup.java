@@ -16,6 +16,7 @@ public class CommunityGroup {
 
     private String name;
     private String description;
+    private String whatsappUrl;
 
     @ManyToMany
     private List<User> members;
