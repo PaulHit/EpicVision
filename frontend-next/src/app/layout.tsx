@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "../lib/auth-context";
 
 export const metadata: Metadata = {
 	title: "Florești Community Website",
@@ -27,9 +28,11 @@ export default function RootLayout({
 				/>
 			</head>
 			<body style={{ fontFamily: "Source Serif 4, serif" }}>
-				<div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-amber-50">
-					{children}
-				</div>
+				<AuthProvider>
+					<div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-amber-50">
+						{children}
+					</div>
+				</AuthProvider>
 			</body>
 		</html>
 	);

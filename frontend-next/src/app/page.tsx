@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "../lib/auth-context";
 
 export default function Home() {
+	const { user } = useAuth();
+
 	return (
 		<div className="min-h-screen flex flex-col">
 			{/* Simple Navigation */}
@@ -43,22 +48,50 @@ export default function Home() {
 								>
 									Directory
 								</Link>
+								<Link
+									href="/forum"
+									className="text-white hover:text-orange-100 transition"
+								>
+									Forum
+								</Link>
+								<Link
+									href="/suggestions"
+									className="text-white hover:text-orange-100 transition"
+								>
+									Sugestii
+								</Link>
 							</div>
 						</div>
 						<div className="flex items-center space-x-4">
-							<Link
-								href="/login"
-								className="text-white hover:text-orange-100 transition"
-							>
-								Login
-							</Link>
-							<Link
-								href="/register"
-								className="text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-								style={{ backgroundColor: "#952636" }}
-							>
-								Register
-							</Link>
+							{user ? (
+								<div className="flex items-center space-x-4">
+									<span className="text-white text-sm">
+										Bună, {user.username}!
+									</span>
+									<Link
+										href="/profile"
+										className="text-white hover:text-orange-100 transition"
+									>
+										Profil
+									</Link>
+								</div>
+							) : (
+								<>
+									<Link
+										href="/login"
+										className="text-white hover:text-orange-100 transition"
+									>
+										Login
+									</Link>
+									<Link
+										href="/register"
+										className="text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
+										style={{ backgroundColor: "#952636" }}
+									>
+										Register
+									</Link>
+								</>
+							)}
 						</div>
 					</div>
 				</div>
@@ -122,7 +155,7 @@ export default function Home() {
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
 								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									News Feed
+									📰 Știri
 								</h3>
 							</Link>
 							<Link
@@ -131,7 +164,7 @@ export default function Home() {
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
 								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									Events
+									📅 Evenimente
 								</h3>
 							</Link>
 							<Link
@@ -139,7 +172,7 @@ export default function Home() {
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
 								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									Social Groups
+									👥 Grupuri
 								</h3>
 							</Link>
 							<Link
@@ -148,41 +181,41 @@ export default function Home() {
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
 								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									Local Directory
+									🏪 Afaceri Locale
 								</h3>
 							</Link>
 							<Link
-								href="/resources"
+								href="/forum"
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
 								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									Family Resources
+									💬 Forum
 								</h3>
 							</Link>
 							<Link
-								href="/bulletin-board"
+								href="/suggestions"
 								className="rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border hover:border-orange-300"
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
 								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									Bulletin Board
+									💡 Sugestii
 								</h3>
 							</Link>
 							<Link
-								href="/report-issues"
+								href="/login"
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
 								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									Report Issues
+									🔐 Login
 								</h3>
 							</Link>
 							<Link
-								href="/idea-box"
+								href="/register"
 								className="rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border hover:border-orange-300"
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
 								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									Idea Box
+									📝 Înregistrare
 								</h3>
 							</Link>
 						</div>
