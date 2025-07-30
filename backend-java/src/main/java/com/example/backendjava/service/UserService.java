@@ -27,6 +27,7 @@ public class UserService {
                 .username(dto.username())
                 .email(dto.email())
                 .password(dto.password()) // ⚠️ add hashing in real use
+                .interests(dto.interests() != null ? dto.interests() : List.of())
                 .role(User.Role.USER)
                 .createdAt(LocalDateTime.now())
                 .build();

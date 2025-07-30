@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +24,9 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+
+    @ElementCollection
+    private List<String> interests;
 
     @Enumerated(EnumType.STRING)
     private Role role;

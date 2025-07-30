@@ -1,3 +1,10 @@
 package com.example.backendjava.dto;
 
-public record UserCreateDTO(String username, String email, String password) {} 
+import java.util.List;
+
+public record UserCreateDTO(
+        String username,
+        String email,
+        String password,
+        List<String> interests  // <-- new field
+) {}
