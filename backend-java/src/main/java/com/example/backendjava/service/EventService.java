@@ -79,4 +79,11 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    public EventResponseDTO getById(Integer id) {
+        Event e = eventRepository.findById(id).orElseThrow();
+        return new EventResponseDTO(
+            e.getId(), e.getTitle(), e.getDescription(), e.getFlyerUrl(), e.getLocation(),
+            e.getDateTime(), e.getCreatedBy().getUsername(), e.getCreatedAt()
+        );
+    }
 } 

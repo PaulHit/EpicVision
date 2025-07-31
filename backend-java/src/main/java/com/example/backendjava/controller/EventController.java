@@ -33,5 +33,10 @@ public class EventController {
         return eventService.search(keyword);
     }
 
+    @GetMapping("/{id}")
+    public EventResponseDTO getById(@PathVariable Integer id) {
+        return eventService.getById(id);
+    }
+
 
 } 

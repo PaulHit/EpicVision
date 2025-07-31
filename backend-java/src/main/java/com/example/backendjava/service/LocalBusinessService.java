@@ -89,4 +89,12 @@ public class LocalBusinessService {
                 .collect(Collectors.toList());
     }
 
+    public LocalBusinessResponseDTO getById(Integer id) {
+        LocalBusiness b = businessRepository.findById(id).orElseThrow();
+        return new LocalBusinessResponseDTO(
+            b.getId(), b.getName(), b.getDescription(),
+            b.getCategory().name(), b.getLocation(), b.getContactInfo(),
+            b.getAddedBy().getUsername()
+        );
+    }
 } 

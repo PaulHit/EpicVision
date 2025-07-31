@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO dto) {
-        User user = userRepository.findByUsername(dto.username());
+        User user = userRepository.findByEmail(dto.email());
         if (user == null) {
             throw new RuntimeException("User not found");
         }
@@ -33,7 +33,7 @@ public class AuthController {
         }
 
         String token = jwtService.generateToken(user.getUsername());
-        return ResponseEntity.ok(Map.of("token", token));
+        return ResponseEntity.ok(Map.of("token", token, "user", user));
     }
 }
 

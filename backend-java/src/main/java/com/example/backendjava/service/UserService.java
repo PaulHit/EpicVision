@@ -22,6 +22,10 @@ public class UserService {
             .collect(Collectors.toList());
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public UserResponseDTO create(UserCreateDTO dto) {
         User user = User.builder()
                 .username(dto.username())

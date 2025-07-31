@@ -32,4 +32,8 @@ public class LocalBusinessController {
         return businessService.search(keyword);
     }
 
+    @GetMapping("/{id}")
+    public LocalBusinessResponseDTO getById(@PathVariable Integer id) {
+        return businessService.getById(id);
+    }
 } 

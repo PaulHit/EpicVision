@@ -1,9 +1,12 @@
 package com.example.backendjava.controller;
 
+import com.example.backendjava.domain.User;
 import com.example.backendjava.dto.UserCreateDTO;
 import com.example.backendjava.dto.UserResponseDTO;
 import com.example.backendjava.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,6 +19,14 @@ public class UserController {
     @GetMapping
     public List<UserResponseDTO> getAll() {
         return userService.getAll();
+    }
+
+    @GetMapping("/me")
+    public UserResponseDTO getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+        return new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail());
     }
 
     @PostMapping

@@ -18,6 +18,11 @@ public class ForumPostController {
         return forumPostService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public ForumPostResponseDTO getById(@PathVariable Integer id) {
+        return forumPostService.getById(id);
+    }
+
     @PostMapping
     public ForumPostResponseDTO create(@RequestBody ForumPostCreateDTO dto) {
         return forumPostService.create(dto);

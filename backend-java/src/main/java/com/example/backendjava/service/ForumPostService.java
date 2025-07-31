@@ -38,4 +38,12 @@ public class ForumPostService {
         ForumPost saved = forumPostRepository.save(post);
         return new ForumPostResponseDTO(saved.getId(), saved.getTitle(), saved.getContent(), saved.isAnonymous(), user.getUsername(), saved.getCreatedAt());
     }
+
+    public ForumPostResponseDTO getById(Integer id) {
+        ForumPost p = forumPostRepository.findById(id).orElseThrow();
+        return new ForumPostResponseDTO(
+            p.getId(), p.getTitle(), p.getContent(), p.isAnonymous(),
+            p.getCreatedBy() != null ? p.getCreatedBy().getUsername() : null, p.getCreatedAt()
+        );
+    }
 }
