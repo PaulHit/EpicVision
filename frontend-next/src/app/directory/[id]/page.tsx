@@ -19,7 +19,6 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export default function BusinessDetailPage() {
 	const params = useParams();
-	const router = useRouter();
 	const { user } = useAuth();
 	const [business, setBusiness] = useState<LocalBusiness | null>(null);
 	const [loading, setLoading] = useState(true);

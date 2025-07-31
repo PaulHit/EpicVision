@@ -26,7 +26,6 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 
 export default function EventDetailPage() {
 	const params = useParams();
-	const router = useRouter();
 	const { user } = useAuth();
 	const [event, setEvent] = useState<Event | null>(null);
 	const [loading, setLoading] = useState(true);

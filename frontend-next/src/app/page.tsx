@@ -5,8 +5,6 @@ import { useAuth } from "../lib/auth-context";
 import Navigation from "../components/Navigation";
 
 export default function Home() {
-	const { user } = useAuth();
-
 	return (
 		<div className="min-h-screen flex flex-col">
 			<Navigation />
