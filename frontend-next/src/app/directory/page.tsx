@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { businessesAPI, LocalBusiness } from "../../lib/api";
 import { useAuth } from "../../lib/auth-context";
+import Navigation from "../../components/Navigation";
 
 const CATEGORIES = [
 	"FOOD",
@@ -77,82 +78,7 @@ export default function DirectoryPage() {
 
 	return (
 		<div className="min-h-screen">
-			{/* Navigation */}
-			<nav
-				className="backdrop-blur-sm shadow-sm border-b"
-				style={{ backgroundColor: "#774E3C" }}
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex justify-between items-center h-16">
-						<div className="flex items-center space-x-8">
-							<Link
-								href="/"
-								className="text-xl font-bold text-white"
-								style={{ fontFamily: "Libre Baskerville, serif" }}
-							>
-								Florești
-							</Link>
-							<div className="hidden md:flex space-x-6">
-								<Link
-									href="/news"
-									className="text-white hover:text-orange-100 transition"
-								>
-									News
-								</Link>
-								<Link
-									href="/events"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Events
-								</Link>
-								<Link
-									href="/groups"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Groups
-								</Link>
-								<Link
-									href="/directory"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Directory
-								</Link>
-							</div>
-						</div>
-						<div className="flex items-center space-x-4">
-							{user ? (
-								<div className="flex items-center space-x-4">
-									<span className="text-white text-sm">
-										Bună, {user.username}!
-									</span>
-									<Link
-										href="/profile"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Profil
-									</Link>
-								</div>
-							) : (
-								<>
-									<Link
-										href="/login"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Login
-									</Link>
-									<Link
-										href="/register"
-										className="text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-										style={{ backgroundColor: "#952636" }}
-									>
-										Register
-									</Link>
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-			</nav>
+			<Navigation />
 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 				{/* Header */}
@@ -293,49 +219,55 @@ export default function DirectoryPage() {
 						) : (
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 								{displayBusinesses.map((business) => (
-									<div
+									<Link
 										key={business.id}
-										className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+										href={`/directory/${business.id}`}
+										className="block"
 									>
-										<div className="mb-4">
-											<span
-												className="inline-block px-2 py-1 text-xs font-medium rounded-full"
-												style={{ backgroundColor: "#E8DCC4", color: "#774E3C" }}
+										<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
+											<div className="mb-4">
+												<span
+													className="inline-block px-2 py-1 text-xs font-medium rounded-full"
+													style={{
+														backgroundColor: "#E8DCC4",
+														color: "#774E3C",
+													}}
+												>
+													{CATEGORY_LABELS[business.category] ||
+														business.category}
+												</span>
+											</div>
+											<h3
+												className="text-lg font-semibold mb-2"
+												style={{ color: "#774E3C" }}
 											>
-												{CATEGORY_LABELS[business.category] ||
-													business.category}
-											</span>
-										</div>
-										<h3
-											className="text-lg font-semibold mb-2"
-											style={{ color: "#774E3C" }}
-										>
-											{business.name}
-										</h3>
-										<p className="text-gray-600 mb-4 text-sm">
-											{business.description}
-										</p>
-										<div className="space-y-2 text-sm">
-											<div className="flex items-center">
-												<span
-													className="font-medium"
-													style={{ color: "#774E3C" }}
-												>
-													📍
-												</span>
-												<span className="ml-2">{business.location}</span>
-											</div>
-											<div className="flex items-center">
-												<span
-													className="font-medium"
-													style={{ color: "#774E3C" }}
-												>
-													📞
-												</span>
-												<span className="ml-2">{business.contactInfo}</span>
+												{business.name}
+											</h3>
+											<p className="text-gray-600 mb-4 text-sm">
+												{business.description}
+											</p>
+											<div className="space-y-2 text-sm">
+												<div className="flex items-center">
+													<span
+														className="font-medium"
+														style={{ color: "#774E3C" }}
+													>
+														📍
+													</span>
+													<span className="ml-2">{business.location}</span>
+												</div>
+												<div className="flex items-center">
+													<span
+														className="font-medium"
+														style={{ color: "#774E3C" }}
+													>
+														📞
+													</span>
+													<span className="ml-2">{business.contactInfo}</span>
+												</div>
 											</div>
 										</div>
-									</div>
+									</Link>
 								))}
 							</div>
 						)}

@@ -2,100 +2,14 @@
 
 import Link from "next/link";
 import { useAuth } from "../lib/auth-context";
+import Navigation from "../components/Navigation";
 
 export default function Home() {
 	const { user } = useAuth();
 
 	return (
 		<div className="min-h-screen flex flex-col">
-			{/* Simple Navigation */}
-			<nav
-				className="backdrop-blur-sm shadow-sm border-b"
-				style={{ backgroundColor: "#774E3C" }}
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex justify-between items-center h-16">
-						<div className="flex items-center space-x-8">
-							<Link
-								href="/"
-								className="text-xl font-bold text-white"
-								style={{ fontFamily: "Libre Baskerville, serif" }}
-							>
-								Florești
-							</Link>
-							<div className="hidden md:flex space-x-6">
-								<Link
-									href="/news"
-									className="text-white hover:text-orange-100 transition"
-								>
-									News
-								</Link>
-								<Link
-									href="/events"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Events
-								</Link>
-								<Link
-									href="/groups"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Groups
-								</Link>
-								<Link
-									href="/directory"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Directory
-								</Link>
-								<Link
-									href="/forum"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Forum
-								</Link>
-								<Link
-									href="/suggestions"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Sugestii
-								</Link>
-							</div>
-						</div>
-						<div className="flex items-center space-x-4">
-							{user ? (
-								<div className="flex items-center space-x-4">
-									<span className="text-white text-sm">
-										Bună, {user.username}!
-									</span>
-									<Link
-										href="/profile"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Profil
-									</Link>
-								</div>
-							) : (
-								<>
-									<Link
-										href="/login"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Login
-									</Link>
-									<Link
-										href="/register"
-										className="text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-										style={{ backgroundColor: "#952636" }}
-									>
-										Register
-									</Link>
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-			</nav>
+			<Navigation />
 
 			<div className="flex-1">
 				{/* Hero Section */}
@@ -115,7 +29,7 @@ export default function Home() {
 							style={{ color: "#774E3C" }}
 						>
 							Comunitatea ta online pentru știri, evenimente, grupuri și resurse
-							locale în satul Florești, Cluj.
+							locale în comuna Florești, Cluj.
 						</p>
 						<div className="flex flex-wrap justify-center gap-4">
 							<Link
@@ -144,8 +58,11 @@ export default function Home() {
 				<section className="py-16 px-4 sm:px-6 lg:px-8">
 					<div className="max-w-7xl mx-auto">
 						<h2
-							className="text-3xl font-bold text-center text-orange-900 mb-12"
-							style={{ fontFamily: "Libre Baskerville, serif" }}
+							className="text-3xl font-bold text-center mb-12"
+							style={{
+								fontFamily: "Libre Baskerville, serif",
+								color: "#774E3C",
+							}}
 						>
 							Acces Rapid
 						</h2>
@@ -154,8 +71,11 @@ export default function Home() {
 								href="/news"
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
-								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									📰 Știri
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Știri
 								</h3>
 							</Link>
 							<Link
@@ -163,16 +83,22 @@ export default function Home() {
 								className="rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border hover:border-orange-300"
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
-								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									📅 Evenimente
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Evenimente
 								</h3>
 							</Link>
 							<Link
 								href="/groups"
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
-								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									👥 Grupuri
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Grupuri
 								</h3>
 							</Link>
 							<Link
@@ -180,16 +106,22 @@ export default function Home() {
 								className="rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border hover:border-orange-300"
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
-								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									🏪 Afaceri Locale
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Afaceri Locale
 								</h3>
 							</Link>
 							<Link
 								href="/forum"
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
-								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									💬 Forum
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Forum
 								</h3>
 							</Link>
 							<Link
@@ -197,16 +129,22 @@ export default function Home() {
 								className="rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border hover:border-orange-300"
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
-								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									💡 Sugestii
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Sugestii
 								</h3>
 							</Link>
 							<Link
 								href="/login"
 								className="bg-orange-100/80 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border border-orange-200 hover:border-orange-300"
 							>
-								<h3 className="font-semibold text-orange-900 hover:text-orange-800 transition">
-									🔐 Login
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Login
 								</h3>
 							</Link>
 							<Link
@@ -214,26 +152,17 @@ export default function Home() {
 								className="rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-6 text-center border hover:border-orange-300"
 								style={{ backgroundColor: "#E8DCC4", borderColor: "#D4C4A8" }}
 							>
-								<h3 className="font-semibold text-amber-800 hover:text-orange-800 transition">
-									📝 Înregistrare
+								<h3
+									className="font-semibold hover:text-orange-800 transition"
+									style={{ color: "#774E3C" }}
+								>
+									Înregistrare
 								</h3>
 							</Link>
 						</div>
 					</div>
 				</section>
 			</div>
-
-			{/* Footer */}
-			<footer className="border-t py-8" style={{ backgroundColor: "#774E3C" }}>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="text-center text-orange-200">
-						<p>
-							© 2025 Florești Community Website. Built with ❤️ for our
-							community.
-						</p>
-					</div>
-				</div>
-			</footer>
 		</div>
 	);
 }

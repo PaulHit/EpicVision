@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { groupsAPI, CommunityGroup } from "../../lib/api";
 import { useAuth } from "../../lib/auth-context";
+import Navigation from "../../components/Navigation";
 
 export default function GroupsPage() {
 	const [groups, setGroups] = useState<CommunityGroup[]>([]);
@@ -28,82 +29,7 @@ export default function GroupsPage() {
 
 	return (
 		<div className="min-h-screen">
-			{/* Navigation */}
-			<nav
-				className="backdrop-blur-sm shadow-sm border-b"
-				style={{ backgroundColor: "#774E3C" }}
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex justify-between items-center h-16">
-						<div className="flex items-center space-x-8">
-							<Link
-								href="/"
-								className="text-xl font-bold text-white"
-								style={{ fontFamily: "Libre Baskerville, serif" }}
-							>
-								Florești
-							</Link>
-							<div className="hidden md:flex space-x-6">
-								<Link
-									href="/news"
-									className="text-white hover:text-orange-100 transition"
-								>
-									News
-								</Link>
-								<Link
-									href="/events"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Events
-								</Link>
-								<Link
-									href="/groups"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Groups
-								</Link>
-								<Link
-									href="/directory"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Directory
-								</Link>
-							</div>
-						</div>
-						<div className="flex items-center space-x-4">
-							{user ? (
-								<div className="flex items-center space-x-4">
-									<span className="text-white text-sm">
-										Bună, {user.username}!
-									</span>
-									<Link
-										href="/profile"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Profil
-									</Link>
-								</div>
-							) : (
-								<>
-									<Link
-										href="/login"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Login
-									</Link>
-									<Link
-										href="/register"
-										className="text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-										style={{ backgroundColor: "#952636" }}
-									>
-										Register
-									</Link>
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-			</nav>
+			<Navigation />
 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 				{/* Header */}
