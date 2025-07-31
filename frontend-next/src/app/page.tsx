@@ -34,7 +34,7 @@ export default function Home() {
 						<div className="flex flex-wrap justify-center gap-4">
 							<Link
 								href="/events"
-								className="text-white px-8 py-3 rounded-lg hover:opacity-90 transition font-semibold"
+								className="text-white px-8 py-3 rounded-lghover:opacity-90 transition font-semibold"
 								style={{ backgroundColor: "#774E3C" }}
 							>
 								Vezi Evenimente
