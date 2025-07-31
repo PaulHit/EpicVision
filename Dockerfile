@@ -4,13 +4,13 @@ FROM node:18-alpine
 # Set the working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files from frontend-next
 COPY frontend-next/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application
+# Copy the frontend-next directory
 COPY frontend-next/ .
 
 # Build the application
