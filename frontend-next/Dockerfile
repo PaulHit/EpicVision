@@ -1,23 +1,19 @@
-# Use the official Node.js runtime as the base image
-# Railway deployment - clean build
+# Railway Next.js Frontend Deployment
 FROM node:18-alpine
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package files
+# Install dependencies first
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application
+# Copy source code
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Expose the port
+# Expose port
 EXPOSE 3000
 
 # Start the application
