@@ -187,7 +187,7 @@ export default function DirectoryPage() {
 									className="text-lg font-semibold"
 									style={{ color: "#774E3C" }}
 								>
-									Rezultate pentru "{searchKeyword}"
+									Rezultate pentru &quot;{searchKeyword}&quot;
 								</h3>
 								<button
 									onClick={() => {

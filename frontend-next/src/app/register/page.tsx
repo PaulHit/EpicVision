@@ -72,7 +72,7 @@ export default function RegisterPage() {
 				selectedInterests
 			);
 			router.push("/");
-		} catch (err: any) {
+		} catch (err: unknown) {
 			setError(
 				err.response?.data?.message ||
 					"Înregistrarea a eșuat. Te rugăm să încerci din nou."
