@@ -6,6 +6,23 @@ import Link from "next/link";
 import { eventsAPI, Event } from "../../../lib/api";
 import { useAuth } from "../../../lib/auth-context";
 import Navigation from "../../../components/Navigation";
+import dynamic from "next/dynamic";
+
+const MapContainer = dynamic(
+	() => import("react-leaflet").then((mod) => mod.MapContainer),
+	{ ssr: false }
+);
+const TileLayer = dynamic(
+	() => import("react-leaflet").then((mod) => mod.TileLayer),
+	{ ssr: false }
+);
+const Marker = dynamic(
+	() => import("react-leaflet").then((mod) => mod.Marker),
+	{ ssr: false }
+);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
+	ssr: false,
+});
 
 export default function EventDetailPage() {
 	const params = useParams();
@@ -14,6 +31,10 @@ export default function EventDetailPage() {
 	const [event, setEvent] = useState<Event | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [coords, setCoords] = useState<[number, number] | null>(null);
+	const [geocodeFailed, setGeocodeFailed] = useState(false);
+
+	const FLORESTI_COORDS: [number, number] = [46.749, 23.476]; // Florești, Cluj
 
 	const eventId = Number(params.id);
 
@@ -22,6 +43,24 @@ export default function EventDetailPage() {
 			fetchEvent();
 		}
 	}, [eventId]);
+
+	useEffect(() => {
+		if (event && event.location) {
+			setGeocodeFailed(false);
+			fetch(
+				`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(event.location)}`
+			)
+				.then((res) => res.json())
+				.then((data) => {
+					if (data && data.length > 0) {
+						setCoords([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+					} else {
+						setCoords(FLORESTI_COORDS);
+						setGeocodeFailed(true);
+					}
+				});
+		}
+	}, [event]);
 
 	const fetchEvent = async () => {
 		try {
@@ -149,7 +188,10 @@ export default function EventDetailPage() {
 					<div className="p-8">
 						<h1
 							className="text-3xl md:text-4xl font-bold mb-4"
-							style={{ color: "#774E3C", fontFamily: "Libre Baskerville, serif" }}
+							style={{
+								color: "#774E3C",
+								fontFamily: "Libre Baskerville, serif",
+							}}
 						>
 							{event.title}
 						</h1>
@@ -196,20 +238,41 @@ export default function EventDetailPage() {
 							>
 								Locația evenimentului
 							</h2>
-							<div className="bg-gray-100 rounded-lg p-8 text-center">
-								<div className="w-full h-64 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-									<div className="text-center">
-										<div className="text-4xl mb-2">🗺️</div>
-										<p className="text-gray-600">Hartă interactivă</p>
-										<p className="text-sm text-gray-500 mt-2">
-											Locația: {event.location}
-										</p>
+							{coords ? (
+								<MapContainer
+									center={coords}
+									zoom={15}
+									style={{ height: 256, width: "100%", borderRadius: 12 }}
+									scrollWheelZoom={false}
+								>
+									<TileLayer
+										attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+										url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+									/>
+									<Marker position={coords}>
+										<Popup>
+											{geocodeFailed
+												? "Florești, Cluj (default)"
+												: event.location}
+										</Popup>
+									</Marker>
+								</MapContainer>
+							) : (
+								<div className="bg-gray-100 rounded-lg p-8 text-center">
+									<div className="w-full h-64 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+										<div className="text-center">
+											<div className="text-4xl mb-2">🗺️</div>
+											<p className="text-gray-600">Locație indisponibilă</p>
+											<p className="text-sm text-gray-500 mt-2">
+												Locația: {event.location}
+											</p>
+										</div>
 									</div>
+									<p className="text-sm text-gray-600">
+										Nu s-a putut găsi locația pe hartă.
+									</p>
 								</div>
-								<p className="text-sm text-gray-600">
-									Aici va fi integrată o hartă interactivă care va afișa locația exactă a evenimentului.
-								</p>
-							</div>
+							)}
 						</div>
 					</div>
 
@@ -279,4 +342,4 @@ export default function EventDetailPage() {
 			</div>
 		</div>
 	);
-} 
+}

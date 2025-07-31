@@ -11,6 +11,13 @@ export default function ForumPage() {
 	const [loading, setLoading] = useState(true);
 	const { user } = useAuth();
 
+	// Modal state
+	const [showModal, setShowModal] = useState(false);
+	const [newTitle, setNewTitle] = useState("");
+	const [newContent, setNewContent] = useState("");
+	const [submitting, setSubmitting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
 	useEffect(() => {
 		fetchPosts();
 	}, []);
@@ -24,6 +31,27 @@ export default function ForumPage() {
 			console.error("Error fetching posts:", error);
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleCreatePost = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!newTitle.trim() || !newContent.trim()) {
+			setError("Completează titlul și conținutul întrebării.");
+			return;
+		}
+		setSubmitting(true);
+		setError(null);
+		try {
+			await forumAPI.create({ title: newTitle, content: newContent });
+			setShowModal(false);
+			setNewTitle("");
+			setNewContent("");
+			await fetchPosts();
+		} catch (err) {
+			setError("A apărut o eroare la crearea întrebării.");
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
@@ -59,14 +87,78 @@ export default function ForumPage() {
 				{/* Create Post Button */}
 				{user && (
 					<div className="mb-8">
-						<Link
-							href="/forum/create"
+						<button
+							onClick={() => setShowModal(true)}
 							className="inline-flex items-center px-6 py-3 rounded-md text-white hover:opacity-90 transition"
 							style={{ backgroundColor: "#774E3C" }}
 						>
 							<span className="mr-2">✏️</span>
 							Creează o întrebare nouă
-						</Link>
+						</button>
+					</div>
+				)}
+
+				{/* Modal for new question */}
+				{showModal && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+						<div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg relative">
+							<button
+								onClick={() => setShowModal(false)}
+								className="absolute top-4 right-4 text-gray-400 hover:text-red-600 text-2xl"
+								aria-label="Închide"
+							>
+								&times;
+							</button>
+							<h2
+								className="text-2xl font-bold mb-4"
+								style={{ color: "#774E3C" }}
+							>
+								Pune o întrebare nouă
+							</h2>
+							<form onSubmit={handleCreatePost} className="space-y-4">
+								<div>
+									<label
+										className="block text-sm font-medium mb-1"
+										style={{ color: "#774E3C" }}
+									>
+										Titlu
+									</label>
+									<input
+										type="text"
+										value={newTitle}
+										onChange={(e) => setNewTitle(e.target.value)}
+										className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+										maxLength={100}
+										required
+									/>
+								</div>
+								<div>
+									<label
+										className="block text-sm font-medium mb-1"
+										style={{ color: "#774E3C" }}
+									>
+										Conținut
+									</label>
+									<textarea
+										value={newContent}
+										onChange={(e) => setNewContent(e.target.value)}
+										className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+										rows={5}
+										maxLength={1000}
+										required
+									/>
+								</div>
+								{error && <div className="text-red-600 text-sm">{error}</div>}
+								<button
+									type="submit"
+									className="w-full px-4 py-2 rounded-lg text-white font-semibold hover:opacity-90 transition"
+									style={{ backgroundColor: "#774E3C" }}
+									disabled={submitting}
+								>
+									{submitting ? "Se trimite..." : "Trimite întrebarea"}
+								</button>
+							</form>
+						</div>
 					</div>
 				)}
 

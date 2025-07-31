@@ -32,6 +32,14 @@ export default function SuggestionsPage() {
 	const [selectedCategory, setSelectedCategory] = useState("");
 	const { user } = useAuth();
 
+	// Modal state
+	const [showModal, setShowModal] = useState(false);
+	const [newTitle, setNewTitle] = useState("");
+	const [newDescription, setNewDescription] = useState("");
+	const [newCategory, setNewCategory] = useState(SUGGESTION_CATEGORIES[0]);
+	const [submitting, setSubmitting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
 	useEffect(() => {
 		fetchSuggestions();
 	}, []);
@@ -45,6 +53,32 @@ export default function SuggestionsPage() {
 			console.error("Error fetching suggestions:", error);
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleCreateSuggestion = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!newTitle.trim() || !newDescription.trim()) {
+			setError("Completează titlul și descrierea sugestiei.");
+			return;
+		}
+		setSubmitting(true);
+		setError(null);
+		try {
+			await suggestionsAPI.create({
+				title: newTitle,
+				description: newDescription,
+				category: newCategory,
+			});
+			setShowModal(false);
+			setNewTitle("");
+			setNewDescription("");
+			setNewCategory(SUGGESTION_CATEGORIES[0]);
+			await fetchSuggestions();
+		} catch (err) {
+			setError("A apărut o eroare la trimiterea sugestiei.");
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
@@ -105,14 +139,97 @@ export default function SuggestionsPage() {
 				{/* Create Suggestion Button */}
 				{user && (
 					<div className="mb-8">
-						<Link
-							href="/suggestions/create"
+						<button
+							onClick={() => setShowModal(true)}
 							className="inline-flex items-center px-6 py-3 rounded-md text-white hover:opacity-90 transition"
 							style={{ backgroundColor: "#774E3C" }}
 						>
 							<span className="mr-2">💡</span>
 							Trimite o sugestie nouă
-						</Link>
+						</button>
+					</div>
+				)}
+
+				{/* Modal for new suggestion */}
+				{showModal && (
+					<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+						<div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg relative">
+							<button
+								onClick={() => setShowModal(false)}
+								className="absolute top-4 right-4 text-gray-400 hover:text-red-600 text-2xl"
+								aria-label="Închide"
+							>
+								&times;
+							</button>
+							<h2
+								className="text-2xl font-bold mb-4"
+								style={{ color: "#774E3C" }}
+							>
+								Trimite o sugestie nouă
+							</h2>
+							<form onSubmit={handleCreateSuggestion} className="space-y-4">
+								<div>
+									<label
+										className="block text-sm font-medium mb-1"
+										style={{ color: "#774E3C" }}
+									>
+										Titlu
+									</label>
+									<input
+										type="text"
+										value={newTitle}
+										onChange={(e) => setNewTitle(e.target.value)}
+										className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+										maxLength={100}
+										required
+									/>
+								</div>
+								<div>
+									<label
+										className="block text-sm font-medium mb-1"
+										style={{ color: "#774E3C" }}
+									>
+										Descriere
+									</label>
+									<textarea
+										value={newDescription}
+										onChange={(e) => setNewDescription(e.target.value)}
+										className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+										rows={5}
+										maxLength={1000}
+										required
+									/>
+								</div>
+								<div>
+									<label
+										className="block text-sm font-medium mb-1"
+										style={{ color: "#774E3C" }}
+									>
+										Categorie
+									</label>
+									<select
+										value={newCategory}
+										onChange={(e) => setNewCategory(e.target.value)}
+										className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+									>
+										{SUGGESTION_CATEGORIES.map((cat) => (
+											<option key={cat} value={cat}>
+												{CATEGORY_LABELS[cat]}
+											</option>
+										))}
+									</select>
+								</div>
+								{error && <div className="text-red-600 text-sm">{error}</div>}
+								<button
+									type="submit"
+									className="w-full px-4 py-2 rounded-lg text-white font-semibold hover:opacity-90 transition"
+									style={{ backgroundColor: "#774E3C" }}
+									disabled={submitting}
+								>
+									{submitting ? "Se trimite..." : "Trimite sugestia"}
+								</button>
+							</form>
+						</div>
 					</div>
 				)}
 
