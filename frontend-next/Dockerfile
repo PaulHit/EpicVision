@@ -1,4 +1,5 @@
 # Use the official Node.js runtime as the base image
+# Railway deployment - clean build
 FROM node:18-alpine
 
 # Set the working directory
