@@ -219,6 +219,11 @@ export const businessesAPI = {
 		return response.data;
 	},
 
+	getById: async (id: number) => {
+		const response = await api.get(`/local-businesses/${id}`);
+		return response.data;
+	},
+
 	search: async (keyword: string) => {
 		const response = await api.get(
 			`/local-businesses/search?keyword=${keyword}`

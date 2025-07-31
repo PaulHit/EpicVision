@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { eventsAPI, Event } from "../../lib/api";
 import { useAuth } from "../../lib/auth-context";
+import Navigation from "../../components/Navigation";
 
 export default function EventsPage() {
 	const [events, setEvents] = useState<Event[]>([]);
@@ -47,82 +48,7 @@ export default function EventsPage() {
 
 	return (
 		<div className="min-h-screen">
-			{/* Navigation */}
-			<nav
-				className="backdrop-blur-sm shadow-sm border-b"
-				style={{ backgroundColor: "#774E3C" }}
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex justify-between items-center h-16">
-						<div className="flex items-center space-x-8">
-							<Link
-								href="/"
-								className="text-xl font-bold text-white"
-								style={{ fontFamily: "Libre Baskerville, serif" }}
-							>
-								Florești
-							</Link>
-							<div className="hidden md:flex space-x-6">
-								<Link
-									href="/news"
-									className="text-white hover:text-orange-100 transition"
-								>
-									News
-								</Link>
-								<Link
-									href="/events"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Events
-								</Link>
-								<Link
-									href="/groups"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Groups
-								</Link>
-								<Link
-									href="/directory"
-									className="text-white hover:text-orange-100 transition"
-								>
-									Directory
-								</Link>
-							</div>
-						</div>
-						<div className="flex items-center space-x-4">
-							{user ? (
-								<div className="flex items-center space-x-4">
-									<span className="text-white text-sm">
-										Bună, {user.username}!
-									</span>
-									<Link
-										href="/profile"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Profil
-									</Link>
-								</div>
-							) : (
-								<>
-									<Link
-										href="/login"
-										className="text-white hover:text-orange-100 transition"
-									>
-										Login
-									</Link>
-									<Link
-										href="/register"
-										className="text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
-										style={{ backgroundColor: "#952636" }}
-									>
-										Register
-									</Link>
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-			</nav>
+			<Navigation />
 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 				{/* Header */}
@@ -234,53 +160,58 @@ export default function EventsPage() {
 							</div>
 						) : (
 							events.map((event) => (
-								<div
+								<Link
 									key={event.id}
-									className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+									href={`/events/${event.id}`}
+									className="block"
 								>
-									<div className="flex flex-col md:flex-row gap-6">
-										{event.flyerUrl && (
-											<div className="flex-shrink-0">
-												<img
-													src={event.flyerUrl}
-													alt={event.title}
-													className="w-32 h-32 object-cover rounded-lg"
-												/>
-											</div>
-										)}
-										<div className="flex-1">
-											<h3
-												className="text-xl font-semibold mb-2"
-												style={{ color: "#774E3C" }}
-											>
-												{event.title}
-											</h3>
-											<p className="text-gray-600 mb-4">{event.description}</p>
-											<div className="flex flex-wrap gap-4 text-sm">
-												<div className="flex items-center">
-													<span
-														className="font-medium"
-														style={{ color: "#774E3C" }}
-													>
-														📅
-													</span>
-													<span className="ml-2">
-														{formatDate(event.dateTime)}
-													</span>
+									<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
+										<div className="flex flex-col md:flex-row gap-6">
+											{event.flyerUrl && (
+												<div className="flex-shrink-0">
+													<img
+														src={event.flyerUrl}
+														alt={event.title}
+														className="w-32 h-32 object-cover rounded-lg"
+													/>
 												</div>
-												<div className="flex items-center">
-													<span
-														className="font-medium"
-														style={{ color: "#774E3C" }}
-													>
-														📍
-													</span>
-													<span className="ml-2">{event.location}</span>
+											)}
+											<div className="flex-1">
+												<h3
+													className="text-xl font-semibold mb-2"
+													style={{ color: "#774E3C" }}
+												>
+													{event.title}
+												</h3>
+												<p className="text-gray-600 mb-4">
+													{event.description}
+												</p>
+												<div className="flex flex-wrap gap-4 text-sm">
+													<div className="flex items-center">
+														<span
+															className="font-medium"
+															style={{ color: "#774E3C" }}
+														>
+															📅
+														</span>
+														<span className="ml-2">
+															{formatDate(event.dateTime)}
+														</span>
+													</div>
+													<div className="flex items-center">
+														<span
+															className="font-medium"
+															style={{ color: "#774E3C" }}
+														>
+															📍
+														</span>
+														<span className="ml-2">{event.location}</span>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								</Link>
 							))
 						)}
 					</div>

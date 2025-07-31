@@ -120,3 +120,38 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+/* Hamburger menu animations */
+.animate-slideIn {
+	animation: slideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes slideIn {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+.animate-slideOut {
+	animation: slideOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes slideOut {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+.animate-fadeIn {
+	animation: fadeIn 0.2s both;
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
